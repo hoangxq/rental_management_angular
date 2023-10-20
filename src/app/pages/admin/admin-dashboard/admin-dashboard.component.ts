@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./admin-dashboard.component.scss']
 })
 export class AdminDashboardComponent {
-
+  roomNumber = 50;
+  serviceNumber = 10;
+  roomRentedNumber = 30;
 }

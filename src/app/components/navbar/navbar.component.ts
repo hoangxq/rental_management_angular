@@ -16,14 +16,16 @@ export class NavbarComponent {
     sessionStorage.removeItem('jwtToken');
     sessionStorage.removeItem('username');
     sessionStorage.removeItem('role');
-    location.reload();
+    // location.reload();
+    this.router.navigate(['/login']);
   }
 
   redirectHome(): void {
-    if (this.role == 'ROLE_ADMIN') this.router.navigate(['/admin'])
-    else if (this.role == 'ROLE_DOCTOR') this.router.navigate(['/doctor'])
-    else if (this.role == 'ROLE_NURSING') this.router.navigate(['/nursing'])
-    else this.router.navigate(['/patient'])
+    // if (this.role == 'ROLE_ADMIN') this.router.navigate(['/admin'])
+    // else if (this.role == 'ROLE_DOCTOR') this.router.navigate(['/doctor'])
+    // else if (this.role == 'ROLE_NURSING') this.router.navigate(['/nursing'])
+    // else this.router.navigate(['/patient'])
+    this.router.navigate(['/admin/home']);
   }
 
 }

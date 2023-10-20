@@ -18,6 +18,8 @@ import { AdminSidebarComponent } from './pages/admin/admin-sidebar/admin-sidebar
 import { AdminMotelRoomComponent } from './pages/admin/admin-motel-room/admin-motel-room.component';
 import { AdminRentalContractComponent } from './pages/admin/admin-rental-contract/admin-rental-contract.component';
 import { AdminDashboardComponent } from './pages/admin/admin-dashboard/admin-dashboard.component';
+import { ModalAdminCreateRoomComponent } from './pages/admin/modal/modal-admin-create-room/modal-admin-create-room.component';
+import { AdminRoomDetailComponent } from './pages/admin/admin-room-detail/admin-room-detail.component';
 
 registerLocaleData(en);
 
@@ -31,7 +33,9 @@ registerLocaleData(en);
     AdminSidebarComponent,
     AdminMotelRoomComponent,
     AdminRentalContractComponent,
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    ModalAdminCreateRoomComponent,
+    AdminRoomDetailComponent
   ],
   imports: [
     BrowserModule,
