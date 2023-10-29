@@ -14,12 +14,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Lịch sử thuê phòng khách hàng: Nguyễn Văn A</h1>
+                        <h1 class="m-0">Cho thuê phòng</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a [routerLink]="['/admin']">Trang chủ</a></li>
-                            <li class="breadcrumb-item active">Lịch sử thuê phòng</li>
+                            <li class="breadcrumb-item active">Cho thuê phòng</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -33,7 +33,7 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Danh sách thuê phòng</h3>
+                            <h3 class="card-title">Chọn một khách hàng hoặc đăng ký khách hàng mới</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -50,30 +50,26 @@
                                         <th>Địa chỉ</th>
                                         <th>Số điện thoại</th>
                                         <th>Email</th>
-                                        <th>Trạng thái</th>
                                         <th>Ghi chú</th>
-                                        <th>Thao tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let data of filterTable.data; let i= index" style="cursor: pointer;"
-                                        (click)="data.status == 'Đang thuê' ? onProcessContract(data.id) : ''">
+                                    <tr [class.highlight]="rowSelectedClient == data.id" style="cursor: pointer;" 
+                                    *ngFor="let data of filterTable.data; let i= index"
+                                    (click)="clickEvent(data.id)">
                                         <td>{{i}}</td>
                                         <td>{{ data.fullName }}</td>
                                         <td>{{ data.idCard }}</td>
                                         <td>{{ data.address }}</td>
                                         <td>{{ data.tel }}</td>
                                         <td>{{ data.email }}</td>
-                                        <td>{{ data.status }}</td>
                                         <td>{{ data.note }}</td>
-                                        <td [nzRight]="false">
-                                            <a><span nz-icon nzType="edit" nzTheme="outline"></span></a>
-                                            <nz-divider nzType="vertical"></nz-divider>
-                                            <a><span nz-icon nzType="delete" nzTheme="outline"></span></a>
-                                        </td>
                                     </tr>
                                 </tbody>
                             </nz-table>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-info" (click)="onRental()">Cho thuê phòng</button>
                         </div>
                     </div>
                 </div>

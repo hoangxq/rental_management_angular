@@ -20,6 +20,9 @@ import { AdminRentalContractComponent } from './pages/admin/admin-rental-contrac
 import { AdminDashboardComponent } from './pages/admin/admin-dashboard/admin-dashboard.component';
 import { ModalAdminCreateRoomComponent } from './pages/admin/modal/modal-admin-create-room/modal-admin-create-room.component';
 import { AdminRoomDetailComponent } from './pages/admin/admin-room-detail/admin-room-detail.component';
+import { CustomerRentalRoomComponent } from './pages/admin/custormer-rental-room/custormer-rental-room.component';
+import { ModalAdminCreateClientComponent } from './pages/admin/modal/modal-admin-create-client/modal-admin-create-client.component';
+import { AdminClientListComponent } from './pages/admin/admin-client-list/admin-client-list.component';
 
 registerLocaleData(en);
 
@@ -35,7 +38,10 @@ registerLocaleData(en);
     AdminRentalContractComponent,
     AdminDashboardComponent,
     ModalAdminCreateRoomComponent,
-    AdminRoomDetailComponent
+    AdminRoomDetailComponent,
+    CustomerRentalRoomComponent,
+    ModalAdminCreateClientComponent,
+    AdminClientListComponent
   ],
   imports: [
     BrowserModule,

@@ -16,11 +16,11 @@ class ClientDto {
 }
 
 @Component({
-  selector: 'app-admin-rental-contract',
-  templateUrl: './admin-rental-contract.component.html',
-  styleUrls: ['./admin-rental-contract.component.scss']
+  selector: 'app-admin-client-list',
+  templateUrl: './admin-client-list.component.html',
+  styleUrls: ['./admin-client-list.component.scss']
 })
-export class AdminRentalContractComponent {
+export class AdminClientListComponent {
   constructor(
     private modalService: NzModalService,
     private notification: NzNotificationService,

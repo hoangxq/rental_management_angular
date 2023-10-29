@@ -12,15 +12,17 @@ class ClientDto {
   tel!: string;
   email!: string;
   note!: string;
-  status!: string;
 }
 
 @Component({
-  selector: 'app-admin-rental-contract',
-  templateUrl: './admin-rental-contract.component.html',
-  styleUrls: ['./admin-rental-contract.component.scss']
+  selector: 'app-custormer-rental-room',
+  templateUrl: './custormer-rental-room.component.html',
+  styleUrls: ['./custormer-rental-room.component.scss']
 })
-export class AdminRentalContractComponent {
+export class CustomerRentalRoomComponent {
+
+  rowSelectedClient: number = -1;
+
   constructor(
     private modalService: NzModalService,
     private notification: NzNotificationService,
@@ -39,7 +41,6 @@ export class AdminRentalContractComponent {
       tel: "0838978446",
       email: "anv@gmail.com",
       note: "None",
-      status: "Đang thuê",
     },
     {
       id: 2,
@@ -49,7 +50,6 @@ export class AdminRentalContractComponent {
       tel: "0838978446",
       email: "anv@gmail.com",
       note: "None",
-      status: "Chưa thuê/Đã hủy",
     },
     {
       id: 3,
@@ -59,7 +59,6 @@ export class AdminRentalContractComponent {
       tel: "0838978446",
       email: "anv@gmail.com",
       note: "None",
-      status: "Chưa thuê/Đã hủy",
     },
     {
       id: 4,
@@ -69,7 +68,6 @@ export class AdminRentalContractComponent {
       tel: "0838978446",
       email: "anv@gmail.com",
       note: "None",
-      status: "Đang thuê",
     },
     {
       id: 5,
@@ -79,7 +77,6 @@ export class AdminRentalContractComponent {
       tel: "0838978446",
       email: "anv@gmail.com",
       note: "None",
-      status: "Chưa thuê/Đã hủy",
     },
   ];
   loading = false;
@@ -92,11 +89,11 @@ export class AdminRentalContractComponent {
     });
   }
 
-  onProcessContract(clientId: number): void {
-    this.modalService.confirm({
-      nzTitle: '<i>Xác nhận</i>',
-      nzContent: '<b>Bạn muốn xem lịch sử thuê phòng của khách hàng này?</b>',
-      nzOnOk: () => this.router.navigate(['/admin/contract', clientId])
-    });
+  onRental(): void {
+    this.router.navigate(['/admin/clients']);
+  }
+
+  clickEvent(clientId: number): void {
+    this.rowSelectedClient = clientId;
   }
 }
