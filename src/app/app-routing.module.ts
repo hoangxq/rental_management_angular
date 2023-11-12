@@ -10,6 +10,7 @@ import { CustomerRentalRoomComponent } from './pages/admin/custormer-rental-room
 import { AdminRentalContractComponent } from './pages/admin/admin-rental-contract/admin-rental-contract.component';
 
 const adminRoutes: Routes = [
+  { path: 'admin', component: AdminDashboardComponent, canActivate: [] },
   { path: 'admin/home', component: AdminDashboardComponent, canActivate: [] },
   { path: 'admin/rooms', component: AdminMotelRoomComponent, canActivate: [] },
   { path: 'admin/room/:id', component: AdminRoomDetailComponent, canActivate: [] },

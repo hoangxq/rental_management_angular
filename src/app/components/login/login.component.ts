@@ -16,6 +16,8 @@ export class LoginComponent implements OnInit {
   accountLogin: AccountLogin = new AccountLogin();
   jwtData: JwtData = new JwtData();
 
+  isSpinning: boolean = false;
+
   constructor(
     private fb: UntypedFormBuilder,
     private accountService: AccountService,
@@ -39,18 +41,24 @@ export class LoginComponent implements OnInit {
       sessionStorage.setItem('username', this.jwtData.username);
       sessionStorage.setItem('role', this.jwtData.role);
 
-      if ("ROLE_ADMIN" === this.jwtData.role) {
+      if ("ADMIN" === this.jwtData.role) {
         this.router.navigate(['/admin']);
       } else {
-        this.router.navigate(['/admin']);
+        this.notification.create(
+          'error',
+          'Lỗi đăng nhập',
+          'Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại'
+        );
       }
       this.notification.create(
         'success',
         'Thông báo',
         'Đăng nhập thành công'
       );
+      this.isSpinning = false;
       // setTimeout(() => location.reload(), 800);
     }, error => {
+      this.isSpinning = false;
       this.notification.create(
         'error',
         'Lỗi đăng nhập',
@@ -61,13 +69,13 @@ export class LoginComponent implements OnInit {
 
   submitForm(): void {
     if (this.validateForm.valid) {
+      this.isSpinning = true;
       console.log('submit', this.validateForm.value);
-      this.router.navigate(['/admin/home'])
       this.accountLogin = {
         username: this.validateForm.value.userName,
         password: this.validateForm.value.password
       }
-      // this.authentication();
+      this.authentication();
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {

@@ -49,28 +49,32 @@
                         <br />
                         <br />
                         <nz-table nzShowSizeChanger nzBordered="true" #filterTable [nzData]="listOfDisplayData"
-                            [nzFrontPagination]="false" [nzLoading]="loading">
+                        [nzFrontPagination]="true" [nzLoading]="loading" [nzTotal]="total" [nzPageSize]="pageSize"
+                        [nzPageIndex]="pageIndex">
                             <thead>
                                 <tr>
                                     <th>STT</th>
                                     <th>Mã phòng</th>
                                     <th>Loại phòng</th>
+                                    <th>Tòa nhà</th>
+                                    <th>Địa chỉ</th>
                                     <th>Giá phòng</th>
                                     <th>Trạng thái</th>
-                                    <th>Mô tả</th>
                                     <th>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let data of filterTable.data; let i= index"
-                                (click)="onViewDetail(i)" style="cursor: pointer;">
-                                    <td>{{i}}</td>
-                                    <td>{{data.name}}</td>
-                                    <td>{{data.type}}</td>
-                                    <td>{{ data.price.toLocaleString().replaceAll(",",
-                                        ".")}} đ</td>
-                                    <td>Còn trống</td>
-                                    <td>{{data.description}}</td>
+                                style="cursor: pointer;">
+                                    <td (click)="onViewDetail(i)">{{i}}</td>
+                                    <td (click)="onViewDetail(i)">{{data.name}}</td>
+                                    <td (click)="onViewDetail(i)">{{data.type}}</td>
+                                    <td (click)="onViewDetail(i)">{{data.buildingDto.name}}</td>
+                                    <td (click)="onViewDetail(i)">{{data.buildingDto.address}}</td>
+                                    <td (click)="onViewDetail(i)">{{ data.price.toLocaleString().replaceAll(",",
+                                         ".")}} đ</td>
+                                    <td (click)="onViewDetail(i)">{{data.roomStatus.toString() == "AVAILABLE"
+                                    ? "Còn trống" : data.roomStatus.toString() == "RENTED" ? "Đã thuê" : "Chưa rõ tình trạng"}}</td>
                                     <td [nzRight]="false">
                                         <a><span nz-icon
                                                 nzType="edit" nzTheme="outline"></span></a>

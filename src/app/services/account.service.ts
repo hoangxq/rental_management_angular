@@ -14,7 +14,7 @@ export class AccountService {
   constructor(private httpClient: HttpClient, private authService: AuthService) { }
 
   authentication(accountLogin: AccountLogin): Observable<JwtResponse> {
-    return this.httpClient.post<JwtResponse>(`${this.baseURL}/login`, accountLogin);
+    return this.httpClient.post<JwtResponse>(`${this.baseURL}/signin`, accountLogin);
   }
 
   register(accountRegister: AccountRegister): Observable<BaseResponse> {

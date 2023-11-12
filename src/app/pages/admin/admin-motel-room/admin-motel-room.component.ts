@@ -2,15 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { RoomDto } from 'src/app/commons/dto/room';
 import { ModalAdminCreateRoomComponent } from '../modal/modal-admin-create-room/modal-admin-create-room.component';
-
-class RoomDto {
-  id!: number;
-  name!: string;
-  type!: string;
-  price!: number;
-  description!: string;
-}
+import { RoomService } from './../../../services/room.service';
 
 @Component({
   selector: 'app-admin-motel-room',
@@ -22,43 +16,33 @@ export class AdminMotelRoomComponent {
   constructor(
     private modalService: NzModalService,
     private notification: NzNotificationService,
+    private roomService: RoomService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
+    this.getAllRoom();
   }
 
-  listOfDisplayData: RoomDto[] = [
-    {
-      id: 1,
-      name: "string",
-      type: "string",
-      price: 1500000,
-      description: "string"
-    },
-    {
-      id: 1,
-      name: "string",
-      type: "string",
-      price: 1500000,
-      description: "string"
-    },
-    {
-      id: 1,
-      name: "string",
-      type: "string",
-      price: 1500000,
-      description: "string"
-    },
-    {
-      id: 1,
-      name: "string",
-      type: "string",
-      price: 1500000,
-      description: "string"
-    }
-  ];
-  loading = false;
+  listOfDisplayData: RoomDto[] = [];
+
+  total = 1;
+  loading = true;
+  pageSize = 10;
+  pageIndex = 1;
+
+  getAllRoom(): void {
+    this.roomService.getAllRoom().subscribe(response => {
+      this.listOfDisplayData = response.data;
+      this.loading = false;
+    }, error => {
+      this.notification.create(
+        'error',
+        'Lỗi server',
+        'Lỗi truyền tải dữ liệu'
+      );
+    });
+  }
 
   showModalCreateRoom(): void {
     const modal = this.modalService.create({
@@ -66,6 +50,7 @@ export class AdminMotelRoomComponent {
       nzContent: ModalAdminCreateRoomComponent,
       nzWidth: 750,
     });
+    modal.afterClose.subscribe(() => this.getAllRoom())
   }
 
   onViewDetail(roomId: number): void {
