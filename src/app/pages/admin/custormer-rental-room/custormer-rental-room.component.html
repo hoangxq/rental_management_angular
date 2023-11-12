@@ -41,7 +41,8 @@
                             <br />
                             <br />
                             <nz-table nzShowSizeChanger nzBordered="true" #filterTable [nzData]="listOfDisplayData"
-                                [nzFrontPagination]="false" [nzLoading]="loading">
+                                [nzFrontPagination]="true" [nzLoading]="loading" [nzTotal]="total"
+                                [nzPageSize]="pageSize" [nzPageIndex]="pageIndex">
                                 <thead>
                                     <tr>
                                         <th>STT</th>
@@ -50,20 +51,28 @@
                                         <th>Địa chỉ</th>
                                         <th>Số điện thoại</th>
                                         <th>Email</th>
-                                        <th>Ghi chú</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thao tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr [class.highlight]="rowSelectedClient == data.id" style="cursor: pointer;" 
-                                    *ngFor="let data of filterTable.data; let i= index"
-                                    (click)="clickEvent(data.id)">
-                                        <td>{{i}}</td>
-                                        <td>{{ data.fullName }}</td>
-                                        <td>{{ data.idCard }}</td>
-                                        <td>{{ data.address }}</td>
-                                        <td>{{ data.tel }}</td>
-                                        <td>{{ data.email }}</td>
-                                        <td>{{ data.note }}</td>
+                                    <tr *ngFor="let data of filterTable.data; let i= index" style="cursor: pointer;"
+                                        [class.highlight]="rowSelectedClient == data.id" style="cursor: pointer;">
+                                        <td (click)="clickEvent(data.id)">{{i}}</td>
+                                        <td (click)="clickEvent(data.id)">{{ data.fullName }}</td>
+                                        <td (click)="clickEvent(data.id)">{{ data.idCard }}</td>
+                                        <td (click)="clickEvent(data.id)">{{ data.address }}</td>
+                                        <td (click)="clickEvent(data.id)">{{ data.phoneNumber }}</td>
+                                        <td (click)="clickEvent(data.id)">{{ data.email }}</td>
+                                        <td (click)="clickEvent(data.id)">
+                                            {{ data.clientStatus.toString() == "AVAILABLE"
+                                            ? "Chưa thuê/Đã hủy" : data.clientStatus.toString() == "RENTED"
+                                            ? "Đang thuê" : "Chưa rõ tình trạng"}}</td>
+                                        <td [nzRight]="false">
+                                            <a><span nz-icon nzType="edit" nzTheme="outline"></span></a>
+                                            <nz-divider nzType="vertical"></nz-divider>
+                                            <a><span nz-icon nzType="delete" nzTheme="outline"></span></a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </nz-table>

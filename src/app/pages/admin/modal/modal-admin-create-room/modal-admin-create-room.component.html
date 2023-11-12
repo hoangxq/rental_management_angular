@@ -39,6 +39,14 @@
         <div nz-row nzGutter="16">
             <div nz-col nzSm="12">
                 <nz-form-item>
+                    <nz-form-label nzRequired>Diện tích</nz-form-label>
+                    <nz-form-control nzErrorTip="Nhập đầy đủ thông tin!">
+                        <input nz-input type="number" formControlName="roomArea" placeholder="Diện tích" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSm="12">
+                <nz-form-item>
                     <nz-form-label nzRequired>Giá phòng</nz-form-label>
                     <nz-form-control nzErrorTip="Nhập đầy đủ thông tin!">
                         <input nz-input type="number" formControlName="price" placeholder="Giá phòng" />

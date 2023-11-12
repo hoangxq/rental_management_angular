@@ -1,4 +1,4 @@
-import { roomStatus } from "../constants/status";
+import { RoomStatus } from "../constants/status";
 import { BaseResponse } from "./response";
 
 export class RoomDto {
@@ -6,7 +6,8 @@ export class RoomDto {
     name!: string;
     type!: string;
     price!: number;
-    roomStatus!: roomStatus;
+    roomArea!: number;
+    roomStatus!: RoomStatus;
     description!: string;
     buildingDto!: BuildingDto
 }
@@ -15,7 +16,8 @@ export class RoomRequest {
     name!: string;
     type!: string;
     price!: number;
-    status!: roomStatus;
+    roomArea!: number;
+    status!: RoomStatus;
     description!: string;
     buildingRequest!: BuildingRequest
 }

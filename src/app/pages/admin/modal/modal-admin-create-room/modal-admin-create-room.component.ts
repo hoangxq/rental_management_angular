@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { roomStatus } from 'src/app/commons/constants/status';
+import { RoomStatus } from 'src/app/commons/constants/status';
 import { RoomRequest } from './../../../../commons/dto/room';
 import { RoomService } from './../../../../services/room.service';
 
@@ -30,6 +30,7 @@ export class ModalAdminCreateRoomComponent {
       description: [null, [Validators.required]],
       buildingName: [null, [Validators.required]],
       address: [null, [Validators.required]],
+      roomArea: [null, [Validators.required]],
     });
   }
 
@@ -50,7 +51,8 @@ export class ModalAdminCreateRoomComponent {
         name: this.validateForm.value.username,
         type: this.validateForm.value.type,
         price: this.validateForm.value.price,
-        status: roomStatus.AVAILABLE,
+        roomArea: this.validateForm.value.roomArea,
+        status: RoomStatus.AVAILABLE,
         description: this.validateForm.value.description,
         buildingRequest: buildingRequest,
       }
