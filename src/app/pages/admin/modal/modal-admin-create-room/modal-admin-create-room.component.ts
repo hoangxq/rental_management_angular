@@ -48,7 +48,7 @@ export class ModalAdminCreateRoomComponent {
       }
 
       this.createRoomRequest = {
-        name: this.validateForm.value.username,
+        name: this.validateForm.value.name,
         type: this.validateForm.value.type,
         price: this.validateForm.value.price,
         roomArea: this.validateForm.value.roomArea,
