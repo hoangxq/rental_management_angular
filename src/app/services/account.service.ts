@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ROOT_API } from '../commons/constants/api';
-import { AccountLogin, AccountRegister, AccountReq, AccountRes, JwtResponse } from '../commons/dto/account';
-import { AuthService } from './auth.service';
+import { AccountLogin, AccountRegister, AccountReq, AccountRes, JwtResponse, LoginWithTotpRequest } from '../commons/dto/account';
 import { BaseResponse } from '../commons/dto/response';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class AccountService {
   }
 
   register(accountRegister: AccountRegister): Observable<BaseResponse> {
-    return this.httpClient.post<BaseResponse>(`${this.baseURL}/create-account`, accountRegister);
+    return this.httpClient.post<BaseResponse>(`${this.baseURL}/signup`, accountRegister);
   }
 
   updateAccount(accountRegister: AccountReq, accountId: number): Observable<BaseResponse> {
@@ -29,4 +29,27 @@ export class AccountService {
     return this.httpClient.get<AccountRes>(`${this.baseURL}/${accountId}`);
   }
 
+  activeEmailCode(activeCode: string): Observable<BaseResponse> {
+    return this.httpClient.get<BaseResponse>(`${this.baseURL}/activate/${activeCode}`);
+  }
+
+  activeTotpCode(loginWithTotp: LoginWithTotpRequest): Observable<JwtResponse> {
+    return this.httpClient.post<JwtResponse>(`${this.baseURL}/active-totp`, loginWithTotp);
+  }
+
+  registerTotpCode(activeCode: string): Observable<BaseResponse> {
+    return this.httpClient.get<BaseResponse>(`${this.baseURL}/activate-totp/${activeCode}`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.authService.getToken()}`
+      })
+    });
+  }
+
+  registerTotp(): Observable<BaseResponse> {
+    return this.httpClient.get<BaseResponse>(`${this.baseURL}/registerWithTotp`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.authService.getToken()}`
+      })
+    });
+  }
 }

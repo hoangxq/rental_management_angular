@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { AccountLogin, JwtData } from 'src/app/commons/dto/account';
+import { ModalRegisterComponent } from 'src/app/modals/modal-register/modal-register.component';
 import { AccountService } from 'src/app/services/account.service';
 
 @Component({
@@ -37,24 +38,32 @@ export class LoginComponent implements OnInit {
     this.accountService.authentication(this.accountLogin).subscribe(data => {
       this.jwtData = data.data;
 
-      sessionStorage.setItem('jwtToken', this.jwtData.token);
-      sessionStorage.setItem('username', this.jwtData.username);
-      sessionStorage.setItem('role', this.jwtData.role);
-
-      if ("ADMIN" === this.jwtData.role) {
-        this.router.navigate(['/admin']);
-      } else {
-        this.notification.create(
-          'error',
-          'Lỗi đăng nhập',
-          'Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại'
-        );
+      if (this.jwtData.type == "totp") {
+        sessionStorage.setItem('username', this.jwtData.username);
+        sessionStorage.setItem('token', this.jwtData.token);
+        this.router.navigate(['/verify-otp', 'totp']);
       }
-      this.notification.create(
-        'success',
-        'Thông báo',
-        'Đăng nhập thành công'
-      );
+      else {
+        sessionStorage.setItem('jwtToken', this.jwtData.token);
+        sessionStorage.setItem('username', this.jwtData.username);
+        sessionStorage.setItem('role', this.jwtData.role);
+
+        if ("ADMIN" == this.jwtData.role) {
+          this.router.navigate(['/admin']);
+        } else {
+          this.notification.create(
+            'error',
+            'Lỗi đăng nhập',
+            'Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại'
+          );
+        }
+        this.notification.create(
+          'success',
+          'Thông báo',
+          'Đăng nhập thành công'
+        );
+        this.router.navigate(['admin']);
+      }
       this.isSpinning = false;
       // setTimeout(() => location.reload(), 800);
     }, error => {
@@ -84,5 +93,14 @@ export class LoginComponent implements OnInit {
         }
       });
     }
+  }
+
+  showModalRegister(): void {
+    const modal = this.modalService.create({
+      nzTitle: 'Đăng ký tài khoản',
+      nzContent: ModalRegisterComponent,
+      nzWidth: 750,
+      nzOnOk: () => this.router.navigate(['/login'])
+    });
   }
 }

@@ -18,7 +18,7 @@ export class AccountRes implements BaseResponse {
 export class AccountRegister {
     username!: string;
     email!: string;
-    authority!: string;
+    authority!: RoleEnum;
     password!: string;
 }
 
@@ -47,4 +47,14 @@ export class JwtData {
     username!: string;
     email!: string;
     role!: string;
+}
+
+export class LoginWithTotpRequest {
+    username!: string;
+    activeCode!: string;
+    password!: string;
+}
+
+export enum RoleEnum {
+    ADMIN
 }

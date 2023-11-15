@@ -23,6 +23,11 @@ import { AdminRoomDetailComponent } from './pages/admin/admin-room-detail/admin-
 import { CustomerRentalRoomComponent } from './pages/admin/custormer-rental-room/custormer-rental-room.component';
 import { ModalAdminCreateClientComponent } from './pages/admin/modal/modal-admin-create-client/modal-admin-create-client.component';
 import { AdminClientListComponent } from './pages/admin/admin-client-list/admin-client-list.component';
+import { ModalRegisterComponent } from './modals/modal-register/modal-register.component';
+import { VerifyOtpComponent } from './components/verify-otp/verify-otp.component';
+import { SecurityInfoComponent } from './components/security-info/security-info.component';
+import { ModalCreateTotpComponent } from './modals/modal-create-totp/modal-create-totp.component';
+import { QRCodeModule } from 'angularx-qrcode';
 
 registerLocaleData(en);
 
@@ -41,7 +46,11 @@ registerLocaleData(en);
     AdminRoomDetailComponent,
     CustomerRentalRoomComponent,
     ModalAdminCreateClientComponent,
-    AdminClientListComponent
+    AdminClientListComponent,
+    ModalRegisterComponent,
+    VerifyOtpComponent,
+    SecurityInfoComponent,
+    ModalCreateTotpComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +59,8 @@ registerLocaleData(en);
     HttpClientModule,
     BrowserAnimationsModule,
     NgZorroAntdModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    QRCodeModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US }

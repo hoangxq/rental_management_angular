@@ -1,0 +1,117 @@
+import { Component } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { JwtData, JwtResponse, LoginWithTotpRequest } from 'src/app/commons/dto/account';
+import { AccountService } from 'src/app/services/account.service';
+
+@Component({
+  selector: 'app-verify-otp',
+  templateUrl: './verify-otp.component.html',
+  styleUrls: ['./verify-otp.component.scss']
+})
+export class VerifyOtpComponent {
+
+  jwtData: JwtData = new JwtData();
+
+  typeActive: string = "";
+  loginWithTotpReq: LoginWithTotpRequest = new LoginWithTotpRequest();
+
+  activeCode: string = "";
+  validateForm!: UntypedFormGroup;
+  isSpinning: boolean = false;
+
+  constructor(
+    private fb: UntypedFormBuilder,
+    private accountService: AccountService,
+    private notification: NzNotificationService,
+    private modalService: NzModalService,
+    private router: Router
+  ) { }
+
+  ngOnInit(): void {
+    const url = this.router.url.split('/');
+    this.typeActive = url[url.length - 1];
+
+    this.loginWithTotpReq.username = sessionStorage.getItem('username') || "";
+    this.loginWithTotpReq.password = sessionStorage.getItem('token') || "";
+
+    this.validateForm = this.fb.group({
+      activeCode: [null, [Validators.required]],
+    });
+  }
+
+  activeEmailCode(): void {
+    this.accountService.activeEmailCode(this.activeCode).subscribe(response => {
+      this.notification.create(
+        'success',
+        'Thông báo',
+        'Đăng ký thành công'
+      );
+      this.isSpinning = false;
+      this.router.navigate(['/login']);
+    }, error => {
+      this.isSpinning = false;
+      this.notification.create(
+        'error',
+        'Lỗi xác thực',
+        'Mã xác thực không chính xác. Vui lòng thử lại'
+      );
+    });
+  }
+
+  activeTotpCode(): void {
+    this.accountService.activeTotpCode(this.loginWithTotpReq).subscribe(response => {
+      this.jwtData = response.data;
+
+      sessionStorage.removeItem('jwtToken');
+      sessionStorage.setItem('jwtToken', this.jwtData.token);
+      sessionStorage.setItem('username', this.jwtData.username);
+      sessionStorage.setItem('role', this.jwtData.role);
+      sessionStorage.removeItem('token');
+      
+      this.isSpinning = false;
+
+      this.notification.create(
+        'success',
+        'Thông báo',
+        'Đăng nhập thành công'
+      );
+
+      if ("ADMIN" == this.jwtData.role) {
+        this.router.navigate(['/admin']);
+      }
+
+    }, error => {
+      this.isSpinning = false;
+      this.notification.create(
+        'error',
+        'Lỗi xác thực',
+        'Mã xác thực không chính xác. Vui lòng thử lại'
+      );
+    });
+  }
+
+  submitForm(): void {
+    if (this.validateForm.valid) {
+      this.isSpinning = true;
+      console.log('submit', this.validateForm.value);
+
+      if (this.typeActive == "email") {
+        this.activeCode = this.validateForm.value.activeCode;
+        this.activeEmailCode();
+      } else if (this.typeActive == "totp") {
+        this.loginWithTotpReq.activeCode = this.validateForm.value.activeCode;
+        this.activeTotpCode();
+      }
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+  }
+}

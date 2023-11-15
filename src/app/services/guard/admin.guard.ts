@@ -7,7 +7,7 @@ import { CanActivate } from '@angular/router';
 export class AdminGuard implements CanActivate {
     canActivate() {
         let Role = sessionStorage.getItem("role");
-        if (Role == "ROLE_ADMIN") {
+        if (Role == "ADMIN") {
             return true;
         }
         return false;

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ROOT_API } from '../commons/constants/api';
@@ -13,23 +13,42 @@ export class ClientService {
     constructor(private httpClient: HttpClient, private authService: AuthService) { }
 
     createClient(clientRequest: ClientRequest): Observable<ClientResponse> {
-        return this.httpClient.post<ClientResponse>(`${this.baseURL}`, clientRequest);
+        return this.httpClient.post<ClientResponse>(`${this.baseURL}`, clientRequest, {
+            headers: new HttpHeaders({
+                'Authorization': `Bearer ${this.authService.getToken()}`
+            })
+        });
     }
 
     getAllClient(): Observable<ListClientResponse> {
-        return this.httpClient.get<ListClientResponse>(`${this.baseURL}`);
+        return this.httpClient.get<ListClientResponse>(`${this.baseURL}`, {
+            headers: new HttpHeaders({
+                'Authorization': `Bearer ${this.authService.getToken()}`
+            })
+        });
     }
 
     getClientById(clientId: number): Observable<ClientResponse> {
-        return this.httpClient.get<ClientResponse>(`${this.baseURL}/${clientId}`);
+        return this.httpClient.get<ClientResponse>(`${this.baseURL}/${clientId}`, {
+            headers: new HttpHeaders({
+                'Authorization': `Bearer ${this.authService.getToken()}`
+            })
+        });
     }
 
     updateRoom(clientId: number, clientRequest: ClientRequest): Observable<ClientResponse> {
-        return this.httpClient.put<ClientResponse>(`${this.baseURL}/${clientId}`, clientRequest);
+        return this.httpClient.put<ClientResponse>(`${this.baseURL}/${clientId}`, clientRequest, {
+            headers: new HttpHeaders({
+                'Authorization': `Bearer ${this.authService.getToken()}`
+            })
+        });
     }
 
     deleteRoom(clientId: number): Observable<number> {
-        return this.httpClient.delete<number>(`${this.baseURL}/${clientId}`);
+        return this.httpClient.delete<number>(`${this.baseURL}/${clientId}`, {
+            headers: new HttpHeaders({
+                'Authorization': `Bearer ${this.authService.getToken()}`
+            })
+        });
     }
-
 }
