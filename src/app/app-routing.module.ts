@@ -12,6 +12,7 @@ import { AuthGuard } from './services/guard/auth.guard';
 import { AdminGuard } from './services/guard/admin.guard';
 import { VerifyOtpComponent } from './components/verify-otp/verify-otp.component';
 import { SecurityInfoComponent } from './components/security-info/security-info.component';
+import { AuthenticateOptionsComponent } from './components/authenticate-options/authenticate-options.component';
 
 const adminRoutes: Routes = [
   { path: 'admin', component: AdminDashboardComponent, canActivate: [AuthGuard, AdminGuard] },
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'verify-otp/:id', component: VerifyOtpComponent },
+  { path: 'authenticate-options', component: AuthenticateOptionsComponent },
   ...adminRoutes,
   { path: '404', component: PageNotFoundComponent },
   { path: '**', redirectTo: '404' },

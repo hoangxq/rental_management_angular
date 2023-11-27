@@ -41,7 +41,8 @@ export class LoginComponent implements OnInit {
       if (this.jwtData.type == "totp") {
         sessionStorage.setItem('username', this.jwtData.username);
         sessionStorage.setItem('token', this.jwtData.token);
-        this.router.navigate(['/verify-otp', 'totp']);
+        // this.router.navigate(['/verify-otp', 'totp']);
+        this.router.navigate(['/authenticate-options']);
       }
       else {
         sessionStorage.setItem('jwtToken', this.jwtData.token);

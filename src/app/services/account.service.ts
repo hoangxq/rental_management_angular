@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ROOT_API } from '../commons/constants/api';
 import { AccountLogin, AccountRegister, AccountReq, AccountRes, JwtResponse, LoginWithTotpRequest } from '../commons/dto/account';
 import { BaseResponse } from '../commons/dto/response';
+import { LoginWithSmsRequest, SmsSenderRequest } from '../commons/dto/sms-auth';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -33,12 +34,13 @@ export class AccountService {
     return this.httpClient.get<BaseResponse>(`${this.baseURL}/activate/${activeCode}`);
   }
 
+  // TOTP API
   activeTotpCode(loginWithTotp: LoginWithTotpRequest): Observable<JwtResponse> {
     return this.httpClient.post<JwtResponse>(`${this.baseURL}/active-totp`, loginWithTotp);
   }
 
   registerTotpCode(activeCode: string): Observable<BaseResponse> {
-    return this.httpClient.get<BaseResponse>(`${this.baseURL}/activate-totp/${activeCode}`, {
+    return this.httpClient.get<BaseResponse>(`${this.baseURL}/register-totp/${activeCode}`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${this.authService.getToken()}`
       })
@@ -51,5 +53,14 @@ export class AccountService {
         'Authorization': `Bearer ${this.authService.getToken()}`
       })
     });
+  }
+
+  // SMS API
+  sendSmsAuthenticate(smsSenderReq: SmsSenderRequest): Observable<JwtResponse> {
+    return this.httpClient.post<JwtResponse>(`${this.baseURL}/sms-authenticate`, smsSenderReq);
+  }
+
+  activeSmsAuthenticate(loginWithSmsReq: LoginWithSmsRequest): Observable<JwtResponse> {
+    return this.httpClient.post<JwtResponse>(`${this.baseURL}/sms-authenticate/active`, loginWithSmsReq);
   }
 }

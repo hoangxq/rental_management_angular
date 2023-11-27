@@ -3,7 +3,8 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { JwtData, JwtResponse, LoginWithTotpRequest } from 'src/app/commons/dto/account';
+import { JwtData, LoginWithTotpRequest } from 'src/app/commons/dto/account';
+import { LoginWithSmsRequest } from 'src/app/commons/dto/sms-auth';
 import { AccountService } from 'src/app/services/account.service';
 
 @Component({
@@ -17,6 +18,7 @@ export class VerifyOtpComponent {
 
   typeActive: string = "";
   loginWithTotpReq: LoginWithTotpRequest = new LoginWithTotpRequest();
+  loginWithSmsReq: LoginWithSmsRequest = new LoginWithSmsRequest();
 
   activeCode: string = "";
   validateForm!: UntypedFormGroup;
@@ -70,7 +72,7 @@ export class VerifyOtpComponent {
       sessionStorage.setItem('username', this.jwtData.username);
       sessionStorage.setItem('role', this.jwtData.role);
       sessionStorage.removeItem('token');
-      
+
       this.isSpinning = false;
 
       this.notification.create(
@@ -93,6 +95,47 @@ export class VerifyOtpComponent {
     });
   }
 
+  activeSmsCode(): void {
+    this.accountService.activeSmsAuthenticate(this.loginWithTotpReq).subscribe(response => {
+      this.jwtData = response.data;
+
+      sessionStorage.removeItem('jwtToken');
+      sessionStorage.setItem('jwtToken', this.jwtData.token);
+      sessionStorage.setItem('username', this.jwtData.username);
+      sessionStorage.setItem('role', this.jwtData.role);
+      sessionStorage.removeItem('token');
+
+      this.isSpinning = false;
+
+      this.notification.create(
+        'success',
+        'Thông báo',
+        'Đăng nhập thành công'
+      );
+
+      if ("ADMIN" == this.jwtData.role) {
+        this.router.navigate(['/admin']);
+      }
+
+    }, error => {
+      this.isSpinning = false;
+      let errKey = error.error.errKey;
+      if (errKey == "err.sys.sms-code-expired")
+        this.notification.create(
+          'error',
+          'Lỗi xác thực',
+          'Mã xác thực hết hạn. Vui lòng thử lại'
+        );
+      else {
+        this.notification.create(
+          'error',
+          'Lỗi xác thực',
+          'Mã xác thực không chính xác. Vui lòng thử lại'
+        );
+      }
+    });
+  }
+
   submitForm(): void {
     if (this.validateForm.valid) {
       this.isSpinning = true;
@@ -104,7 +147,11 @@ export class VerifyOtpComponent {
       } else if (this.typeActive == "totp") {
         this.loginWithTotpReq.activeCode = this.validateForm.value.activeCode;
         this.activeTotpCode();
+      } else if (this.typeActive == "sms") {
+        this.loginWithTotpReq.activeCode = this.validateForm.value.activeCode;
+        this.activeSmsCode();
       }
+
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {

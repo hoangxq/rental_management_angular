@@ -28,6 +28,9 @@ import { VerifyOtpComponent } from './components/verify-otp/verify-otp.component
 import { SecurityInfoComponent } from './components/security-info/security-info.component';
 import { ModalCreateTotpComponent } from './modals/modal-create-totp/modal-create-totp.component';
 import { QRCodeModule } from 'angularx-qrcode';
+import { AuthenticateOptionsComponent } from './components/authenticate-options/authenticate-options.component';
+import { ModalInputPhoneNumberComponent } from './modals/modal-input-phone-number/modal-input-phone-number.component';
+import { ModalInputEmailComponent } from './modals/modal-input-email/modal-input-email.component';
 
 registerLocaleData(en);
 
@@ -50,7 +53,10 @@ registerLocaleData(en);
     ModalRegisterComponent,
     VerifyOtpComponent,
     SecurityInfoComponent,
-    ModalCreateTotpComponent
+    ModalCreateTotpComponent,
+    AuthenticateOptionsComponent,
+    ModalInputPhoneNumberComponent,
+    ModalInputEmailComponent
   ],
   imports: [
     BrowserModule,
