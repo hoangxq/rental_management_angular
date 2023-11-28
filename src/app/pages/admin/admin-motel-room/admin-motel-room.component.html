@@ -30,7 +30,7 @@
             <div class="content-fluid">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Danh sách phòng trọ</h3>
+                        <h3 class="card-title">Danh sách phòng trọ (Chọn 1 phòng trọ để xem chi tiết)</h3>
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 150px;">
                               <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
@@ -79,10 +79,12 @@
                                     ? "Còn trống" : data.roomStatus.toString() == "RENTED" ? "Đã thuê" : "Chưa rõ tình trạng"}}</td>
                                     <td [nzRight]="false">
                                         <a><span nz-icon
-                                                nzType="edit" nzTheme="outline"></span></a>
+                                                nzType="edit" nzTheme="outline"
+                                                (click)="showModalUpdateRoom(data.id)"></span></a>
                                         <nz-divider nzType="vertical"></nz-divider>
                                         <a><span nz-icon
-                                                nzType="delete" nzTheme="outline"></span></a>
+                                                nzType="delete" nzTheme="outline"
+                                                (click)="onDeleteRoom(data.id)"></span></a>
                                     </td>
                                 </tr>
                             </tbody>
