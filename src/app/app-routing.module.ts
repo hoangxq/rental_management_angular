@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthenticateOptionsComponent } from './components/authenticate-options/authenticate-options.component';
 import { LoginComponent } from './components/login/login.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { SecurityInfoComponent } from './components/security-info/security-info.component';
 import { VerifyOtpComponent } from './components/verify-otp/verify-otp.component';
 import { AdminBillDetailComponent } from './pages/admin/admin-bill-detail/admin-bill-detail.component';
 import { AdminClientListComponent } from './pages/admin/admin-client-list/admin-client-list.component';
@@ -13,6 +14,7 @@ import { AdminRentalContractComponent } from './pages/admin/admin-rental-contrac
 import { AdminRoomDetailComponent } from './pages/admin/admin-room-detail/admin-room-detail.component';
 import { AdminServiceListComponent } from './pages/admin/admin-service-list/admin-service-list.component';
 import { CustomerRentalRoomComponent } from './pages/admin/custormer-rental-room/custormer-rental-room.component';
+import { AdminGuard } from './services/guard/admin.guard';
 import { AuthGuard } from './services/guard/auth.guard';
 
 const adminRoutes: Routes = [
@@ -25,7 +27,8 @@ const adminRoutes: Routes = [
   { path: 'admin/contract/client/:id', component: AdminRentalContractComponent, canActivate: [AuthGuard] },
   { path: 'admin/services', component: AdminServiceListComponent, canActivate: [AuthGuard] },
   { path: 'admin/month-bill/:contractId', component: AdminMonthBillComponent, canActivate: [AuthGuard] },
-  { path: 'admin/bill-detail/:billId', component: AdminBillDetailComponent, canActivate: [AuthGuard] }
+  { path: 'admin/bill-detail/:billId', component: AdminBillDetailComponent, canActivate: [AuthGuard] },
+  { path: 'admin/security-info', component: SecurityInfoComponent, canActivate: [AuthGuard, AdminGuard] },
 ]
 
 const routes: Routes = [
