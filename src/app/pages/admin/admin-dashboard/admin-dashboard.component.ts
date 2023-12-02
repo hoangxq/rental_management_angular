@@ -9,4 +9,7 @@ export class AdminDashboardComponent {
   roomNumber = 50;
   serviceNumber = 10;
   roomRentedNumber = 30;
+
+  ngOnInit(): void {
+  }
 }

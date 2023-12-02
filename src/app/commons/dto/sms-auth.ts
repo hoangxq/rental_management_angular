@@ -5,6 +5,15 @@ export class SmsSenderRequest {
 
 export class LoginWithSmsRequest {
     username!: string;
-    password!: string;
+    activeCode!: string;
+}
+
+export class EmailSenderRequest {
+    email!: string;
+    username!: string;
+}
+
+export class LoginWithEmailRequest {
+    email!: string;
     activeCode!: string;
 }

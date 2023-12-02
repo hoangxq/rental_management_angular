@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { SmsSenderRequest } from 'src/app/commons/dto/sms-auth';
@@ -19,7 +20,8 @@ export class ModalInputPhoneNumberComponent {
   constructor(
     private modal: NzModalRef,
     private fb: UntypedFormBuilder,
-    private accountService: AccountService,
+    private accountService: AccountService,    
+    private router: Router,
     private notification: NzNotificationService
   ) { }
 
@@ -45,6 +47,7 @@ export class ModalInputPhoneNumberComponent {
       this.accountService.sendSmsAuthenticate(this.smsSenderRequest).subscribe(response => {
         this.isSpinning = false;
         this.destroyModal();
+        this.router.navigate(['/verify-otp', 'sms']);
       }, error => {
         this.isSpinning = false;
         this.notification.create(

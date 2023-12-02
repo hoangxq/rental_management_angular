@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    sessionStorage.clear();
     this.validateForm = this.fb.group({
       userName: [null, [Validators.required]],
       password: [null, [Validators.required]],
@@ -38,10 +39,9 @@ export class LoginComponent implements OnInit {
     this.accountService.authentication(this.accountLogin).subscribe(data => {
       this.jwtData = data.data;
 
-      if (this.jwtData.type == "totp") {
+      if (this.jwtData.type == "auth") {
         sessionStorage.setItem('username', this.jwtData.username);
         sessionStorage.setItem('token', this.jwtData.token);
-        // this.router.navigate(['/verify-otp', 'totp']);
         this.router.navigate(['/authenticate-options']);
       }
       else {
@@ -69,11 +69,18 @@ export class LoginComponent implements OnInit {
       // setTimeout(() => location.reload(), 800);
     }, error => {
       this.isSpinning = false;
-      this.notification.create(
-        'error',
-        'Lỗi đăng nhập',
-        'Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại'
-      );
+      let errorKey = error.error.errKey;
+
+      if (errorKey == "err.sys.account-is-not-active"){
+        this.router.navigate(['/verify-otp', "email-register"]);
+      }
+      else {
+        this.notification.create(
+          'error',
+          'Lỗi đăng nhập',
+          'Tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại'
+        );
+      }
     });
   }
 

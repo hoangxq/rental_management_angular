@@ -16,6 +16,7 @@ import { AdminServiceListComponent } from './pages/admin/admin-service-list/admi
 import { CustomerRentalRoomComponent } from './pages/admin/custormer-rental-room/custormer-rental-room.component';
 import { AdminGuard } from './services/guard/admin.guard';
 import { AuthGuard } from './services/guard/auth.guard';
+import { AuthOptionsGuard } from './services/guard/auth-options.guard';
 
 const adminRoutes: Routes = [
   { path: 'admin', component: AdminDashboardComponent, canActivate: [AuthGuard] },
@@ -35,7 +36,7 @@ const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'verify-otp/:id', component: VerifyOtpComponent },
-  { path: 'authenticate-options', component: AuthenticateOptionsComponent },
+  { path: 'authenticate-options', component: AuthenticateOptionsComponent, canActivate: [AuthOptionsGuard] },
   ...adminRoutes,
   { path: '404', component: PageNotFoundComponent },
   { path: '**', redirectTo: '404' },

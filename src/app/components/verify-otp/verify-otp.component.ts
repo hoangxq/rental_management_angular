@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { JwtData, LoginWithTotpRequest } from 'src/app/commons/dto/account';
-import { LoginWithSmsRequest } from 'src/app/commons/dto/sms-auth';
+import { LoginWithEmailRequest, LoginWithSmsRequest } from 'src/app/commons/dto/sms-auth';
 import { AccountService } from 'src/app/services/account.service';
 
 @Component({
@@ -19,6 +19,7 @@ export class VerifyOtpComponent {
   typeActive: string = "";
   loginWithTotpReq: LoginWithTotpRequest = new LoginWithTotpRequest();
   loginWithSmsReq: LoginWithSmsRequest = new LoginWithSmsRequest();
+  loginWithEmailReq: LoginWithEmailRequest = new LoginWithEmailRequest();
 
   activeCode: string = "";
   validateForm!: UntypedFormGroup;
@@ -37,14 +38,14 @@ export class VerifyOtpComponent {
     this.typeActive = url[url.length - 1];
 
     this.loginWithTotpReq.username = sessionStorage.getItem('username') || "";
-    this.loginWithTotpReq.password = sessionStorage.getItem('token') || "";
+    this.loginWithEmailReq.email = sessionStorage.getItem('email') || "";
 
     this.validateForm = this.fb.group({
       activeCode: [null, [Validators.required]],
     });
   }
 
-  activeEmailCode(): void {
+  activeEmailCodeWhenRegister(): void {
     this.accountService.activeEmailCode(this.activeCode).subscribe(response => {
       this.notification.create(
         'success',
@@ -53,6 +54,39 @@ export class VerifyOtpComponent {
       );
       this.isSpinning = false;
       this.router.navigate(['/login']);
+    }, error => {
+      this.isSpinning = false;
+      this.notification.create(
+        'error',
+        'Lỗi xác thực',
+        'Mã xác thực không chính xác. Vui lòng thử lại'
+      );
+    });
+  }
+
+  activeEmailCode(): void {
+    this.accountService.activeEmailAuthenticate(this.loginWithEmailReq).subscribe(response => {
+      this.jwtData = response.data;
+
+      sessionStorage.removeItem('jwtToken');
+      sessionStorage.setItem('jwtToken', this.jwtData.token);
+      sessionStorage.setItem('username', this.jwtData.username);
+      sessionStorage.setItem('role', this.jwtData.role);
+      sessionStorage.removeItem('token');
+
+      this.isSpinning = false;
+
+      this.notification.create(
+        'success',
+        'Thông báo',
+        'Đăng nhập thành công'
+      );
+
+      if ("ADMIN" == this.jwtData.role) {
+        this.router.navigate(['/admin']);
+        setTimeout(() => location.reload(), 800);
+      }
+
     }, error => {
       this.isSpinning = false;
       this.notification.create(
@@ -83,6 +117,8 @@ export class VerifyOtpComponent {
 
       if ("ADMIN" == this.jwtData.role) {
         this.router.navigate(['/admin']);
+        setTimeout(() => location.reload(), 800);
+        
       }
 
     }, error => {
@@ -115,6 +151,7 @@ export class VerifyOtpComponent {
 
       if ("ADMIN" == this.jwtData.role) {
         this.router.navigate(['/admin']);
+        setTimeout(() => location.reload(), 800);
       }
 
     }, error => {
@@ -141,8 +178,11 @@ export class VerifyOtpComponent {
       this.isSpinning = true;
       console.log('submit', this.validateForm.value);
 
-      if (this.typeActive == "email") {
+      if (this.typeActive == "email-register") {
         this.activeCode = this.validateForm.value.activeCode;
+        this.activeEmailCodeWhenRegister();
+      } else if (this.typeActive == "email") {
+        this.loginWithEmailReq.activeCode = this.validateForm.value.activeCode;
         this.activeEmailCode();
       } else if (this.typeActive == "totp") {
         this.loginWithTotpReq.activeCode = this.validateForm.value.activeCode;

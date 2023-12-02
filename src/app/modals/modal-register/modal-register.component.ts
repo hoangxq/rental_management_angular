@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
@@ -46,12 +46,17 @@ export class ModalRegisterComponent {
         authority: RoleEnum.ADMIN,
         password: this.validateForm.value.password,
       }
+      this.accountRegister.username = this.accountRegister.username.trim();
+      this.accountRegister.email = this.accountRegister.email.trim();
+      this.accountRegister.password = this.accountRegister.password.trim();
+
       this.authService.register(this.accountRegister).subscribe(data => {
         console.log(data);
         this.isSpinning = false;
         this.destroyModal();
-        this.router.navigate(['/verify-otp','email'])
+        this.router.navigate(['/verify-otp', 'email-register'])
       }, error => {
+        this.isSpinning = false;
         this.notification.create(
           'error',
           'Lỗi dữ liệu',

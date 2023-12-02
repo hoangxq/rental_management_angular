@@ -13,6 +13,8 @@ import { AccountService } from 'src/app/services/account.service';
   styleUrls: ['./authenticate-options.component.scss']
 })
 export class AuthenticateOptionsComponent {
+  isSpinning: boolean = false;
+
   constructor(
     private fb: UntypedFormBuilder,
     private accountService: AccountService,
@@ -27,7 +29,29 @@ export class AuthenticateOptionsComponent {
   onAuthenticate(option: string): void {
     if (option == 'email') this.showModalInputEmail();
     else if (option == 'sms') this.showModalInputPhoneNumber();
-    else if (option == 'totp') this.router.navigate(['/verify-otp', option]);
+    else if (option == 'totp') {
+      let username = sessionStorage.getItem('username') || "";
+
+      this.isSpinning = true;
+      this.accountService.checkTotpRegister(username).subscribe(response => {
+        this.isSpinning = false;
+        let checkFlag = response.data;
+        if (checkFlag == false)
+          this.notification.create(
+            'info',
+            'Thông báo',
+            'Bạn chưa đăng ký xác thực bằng ứng dụng thứ 3. Vui lòng sử dụng phương thức xác thực khác'
+          );
+        else this.router.navigate(['/verify-otp', option]);
+      }, error => {
+        this.isSpinning = false;
+        this.notification.create(
+          'error',
+          'Lỗi đăng nhập',
+          'Lỗi hệ thống. Vui lòng thử lại'
+        );
+      });
+    }
   }
 
   showModalInputPhoneNumber(): void {
@@ -36,7 +60,6 @@ export class AuthenticateOptionsComponent {
       nzContent: ModalInputPhoneNumberComponent,
       nzWidth: 350
     });
-    modal.afterClose.subscribe(() => this.router.navigate(['/verify-otp', 'sms']))
   }
 
   showModalInputEmail(): void {

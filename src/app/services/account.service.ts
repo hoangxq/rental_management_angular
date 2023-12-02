@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { ROOT_API } from '../commons/constants/api';
 import { AccountLogin, AccountRegister, AccountReq, AccountRes, JwtResponse, LoginWithTotpRequest } from '../commons/dto/account';
 import { BaseResponse } from '../commons/dto/response';
-import { LoginWithSmsRequest, SmsSenderRequest } from '../commons/dto/sms-auth';
+import { EmailSenderRequest, LoginWithEmailRequest, LoginWithSmsRequest, SmsSenderRequest } from '../commons/dto/sms-auth';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -23,11 +23,19 @@ export class AccountService {
   }
 
   updateAccount(accountRegister: AccountReq, accountId: number): Observable<BaseResponse> {
-    return this.httpClient.put<BaseResponse>(`${this.baseURL}/update-account/${accountId}`, accountRegister);
+    return this.httpClient.put<BaseResponse>(`${this.baseURL}/update-account/${accountId}`, accountRegister, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.authService.getToken()}`
+      })
+    });
   }
 
   getAccount(accountId: number): Observable<AccountRes> {
-    return this.httpClient.get<AccountRes>(`${this.baseURL}/${accountId}`);
+    return this.httpClient.get<AccountRes>(`${this.baseURL}/${accountId}`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.authService.getToken()}`
+      })
+    });
   }
 
   activeEmailCode(activeCode: string): Observable<BaseResponse> {
@@ -55,6 +63,10 @@ export class AccountService {
     });
   }
 
+  checkTotpRegister(username: string): Observable<BaseResponse> {
+    return this.httpClient.get<BaseResponse>(`${this.baseURL}/check-totp-register/${username}`);
+  }
+
   // SMS API
   sendSmsAuthenticate(smsSenderReq: SmsSenderRequest): Observable<JwtResponse> {
     return this.httpClient.post<JwtResponse>(`${this.baseURL}/sms-authenticate`, smsSenderReq);
@@ -62,5 +74,14 @@ export class AccountService {
 
   activeSmsAuthenticate(loginWithSmsReq: LoginWithSmsRequest): Observable<JwtResponse> {
     return this.httpClient.post<JwtResponse>(`${this.baseURL}/sms-authenticate/active`, loginWithSmsReq);
+  }
+
+  // Email API
+  sendEmailAuthenticate(emailSenderReq: EmailSenderRequest): Observable<JwtResponse> {
+    return this.httpClient.post<JwtResponse>(`${this.baseURL}/email-authenticate`, emailSenderReq);
+  }
+
+  activeEmailAuthenticate(loginWithEmailReq: LoginWithEmailRequest): Observable<JwtResponse> {
+    return this.httpClient.post<JwtResponse>(`${this.baseURL}/email-authenticate/active`, loginWithEmailReq);
   }
 }

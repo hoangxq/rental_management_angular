@@ -21,37 +21,6 @@ export class AuthService {
   }
 
   getNameOfAccount(): string {
-    // const role: string = sessionStorage.getItem('role') || '';
-    // const username: string = sessionStorage.getItem('username') || '';
-    // if (role == "ROLE_PATIENT") {
-    //   let patientDto: PatientDto = new PatientDto();
-    //   this.userService.getPatientByUsername(username).subscribe(data => {
-    //     patientDto = data.data;
-    //     console.log(data)
-    //     return patientDto.fullName;
-    //   }, error => {
-    //     this.notification.create(
-    //       'error',
-    //       'Lỗi máy chủ',
-    //       'Có lỗi xảy ra vui lòng thử lại sau'
-    //     );
-    //   })
-    //   return patientDto.fullName;
-    // } else if (role == "ROLE_DOCTOR" || role == "ROLE_NURSING") {
-    //   let staffDto: StaffDto = new StaffDto();
-    //   this.userService.getStaffByUsername(username).subscribe(data => {
-    //     staffDto = data.data;
-    //     console.log(data)
-    //     return staffDto.fullName;
-    //   }, error => {
-    //     this.notification.create(
-    //       'error',
-    //       'Lỗi máy chủ',
-    //       'Có lỗi xảy ra vui lòng thử lại sau'
-    //     );
-    //   })
-    //   return staffDto.fullName;
-    // } else return "NONE";
     return ""
   }
 }

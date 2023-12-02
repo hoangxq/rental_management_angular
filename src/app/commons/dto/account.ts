@@ -52,7 +52,6 @@ export class JwtData {
 export class LoginWithTotpRequest {
     username!: string;
     activeCode!: string;
-    password!: string;
 }
 
 export enum RoleEnum {
