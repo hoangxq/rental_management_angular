@@ -1,5 +1,5 @@
 <nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'">
-    <form nz-form [formGroup]="validateForm">
+    <form nz-form nzLayout="vertical" nz-form [formGroup]="validateForm">
         <nz-form-item>
             <nz-form-label nzRequired nzFor="email">E-mail</nz-form-label>
             <nz-form-control nzErrorTip="The input is not valid E-mail!">
