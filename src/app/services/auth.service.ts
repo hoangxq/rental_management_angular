@@ -16,6 +16,10 @@ export class AuthService {
     return !!sessionStorage.getItem('jwtToken');
   }
 
+  getUsername() {
+    return sessionStorage.getItem('username') || "";
+  }
+
   getToken() {
     return this.jwtToken;
   }
